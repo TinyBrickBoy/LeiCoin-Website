@@ -29,9 +29,10 @@ $transactionData = array(
     'amount' => $postData["amount"]
 );
 
+$decoded_private_key = "-----BEGIN PRIVATE KEY-----\n" . base64_decode($postData["privateKey"]). "\n-----END PRIVATE KEY-----\n";
 
 // Sign the transaction with the private key
-openssl_sign(json_encode($transactionData), $signature, base64_decode($postData["privateKey"]), OPENSSL_ALGO_SHA256);
+openssl_sign(json_encode($transactionData), $signature, $decoded_private_key, OPENSSL_ALGO_SHA256);
 
 // Convert the signature to a base64-encoded string and add it to the transaction data
 $transactionData['signature'] = base64_encode($signature);
@@ -41,7 +42,7 @@ $txid = hash('sha256', json_encode($transactionData));
 $transactionData = ['txid' => $txid] + $transactionData;
 
 // Send the transaction data, public key, and signature to the Node.js server
-$nodeJsServerUrl = 'http://localhost:12200/sendtransactions';
+$nodeJsServerUrl = 'http://localhost:12200/api/sendtransactions';
 $response = http_post_data($nodeJsServerUrl, json_encode($transactionData));
 
 // Handle the response from the Node.js server
