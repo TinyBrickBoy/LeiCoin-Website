@@ -25,9 +25,24 @@ foreach ($requiredPostDataList as $requiredPostDataItem) {
 // Create a transaction
 $transactionData = array(
     'senderAddress' => $postData["senderAddress"],
-    'recipientAddress' => $postData["recipientAddress"],
-    'amount' => $postData["amount"]
+    "input" => [],
+    "output" => [
+        array(
+            'recipientAddress' => $postData["recipientAddress"],
+            'amount' => $postData["amount"],
+            'index' => 0
+        ),
+        array(
+            'recipientAddress' => $postData["senderAddress"],
+            'amount' => $postData["amount"],
+            'index' => 1
+        )
+    ]
 );
+
+foreach ($transactionData["output"] as &$transaction) {
+    $transaction['hash'] = hash('sha256', json_encode($transaction));
+}
 
 $decoded_private_key = "-----BEGIN PRIVATE KEY-----\n" . base64_decode($postData["privateKey"]). "\n-----END PRIVATE KEY-----\n";
 
