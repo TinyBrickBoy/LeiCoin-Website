@@ -18,6 +18,10 @@
                 <input type="text" class="form-control" id="senderAddress" name="senderAddress">
             </div>
             <div class="form-group">
+                <label for="publicKey">Public Key:</label>
+                <input type="text" class="form-control" id="publicKey" name="publicKey">
+            </div>
+            <div class="form-group">
                 <label for="privateKey">Private Key:</label>
                 <input type="text" class="form-control" id="privateKey" name="privateKey">
             </div>
@@ -44,12 +48,14 @@
 
             submitBtn.addEventListener("click", function () {
                 var senderAddress = document.getElementById("senderAddress").value;
+                var publicKey = document.getElementById("publicKey").value;
                 var privateKey = document.getElementById("privateKey").value;
                 var recipientAddress = document.getElementById("recipientAddress").value;
                 var amount = document.getElementById("amount").value;
 
                 var data = {
                     senderAddress: senderAddress,
+                    publicKey: publicKey,
                     privateKey: privateKey,
                     recipientAddress: recipientAddress,
                     amount: amount

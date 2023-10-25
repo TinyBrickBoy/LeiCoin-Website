@@ -6,6 +6,7 @@ $postData = json_decode(file_get_contents('php://input'), true);
 
 $requiredPostDataList = array(
     "senderAddress",
+    "publicKey",
     "privateKey",
     "recipientAddress",
     "amount"
@@ -25,6 +26,7 @@ foreach ($requiredPostDataList as $requiredPostDataItem) {
 // Create a transaction
 $transactionData = array(
     'senderAddress' => $postData["senderAddress"],
+    "publicKey" => $postData["publicKey"],
     "input" => [],
     "output" => [
         array(
