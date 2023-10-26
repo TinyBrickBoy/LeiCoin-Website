@@ -46,7 +46,7 @@ foreach ($transactionData["output"] as &$transaction) {
     $transaction['hash'] = hash('sha256', json_encode($transaction));
 }
 
-$decoded_private_key = "-----BEGIN PRIVATE KEY-----\n" . base64_decode($postData["privateKey"]). "\n-----END PRIVATE KEY-----\n";
+$decoded_private_key = base64_decode($postData["privateKey"]);
 
 // Sign the transaction with the private key
 openssl_sign(json_encode($transactionData), $signature, $decoded_private_key, OPENSSL_ALGO_SHA256);
