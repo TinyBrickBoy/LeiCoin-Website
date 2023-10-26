@@ -66,13 +66,13 @@ $transactionData = array(
     "output" => [
         array(
             'recipientAddress' => $postData["recipientAddress"],
-            'amount' => $requiredAmount,
+            'amount' => $requiredAmount * 1,
             'index' => 0
         ),
         // Add an output for the sender to receive the change
         array(
             'recipientAddress' => $postData["senderAddress"],
-            'amount' => $remainingAmount,
+            'amount' => $remainingAmount * -1,
             'index' => 1
         )
     ]
