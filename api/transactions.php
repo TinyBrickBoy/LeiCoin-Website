@@ -60,10 +60,19 @@ $transactionData = ['txid' => $txid] + $transactionData;
 
 // Send the transaction data, public key, and signature to the Node.js server
 $nodeJsServerUrl = 'http://localhost:12200/api/sendtransactions';
-$response = http_post_data($nodeJsServerUrl, json_encode($transactionData));
 
-// Handle the response from the Node.js server
-echo $response;
+// Use output buffering to capture the response from the Node.js server
+ob_start();
+$response = http_post_data($nodeJsServerUrl, json_encode($transactionData));
+$bufferedResponse = ob_get_clean();
+
+// Get the HTTP status code from the Node.js server response
+$http_response_code = (isset($http_response_header[0])) ? explode(' ', $http_response_header[0])[1] : 500;
+http_response_code($http_response_code); // Set the HTTP status code to the received status code
+
+// Echo the response message, even if the request fails
+echo $bufferedResponse;
+
 // Function to make a POST request
 function http_post_data($url, $transactionData) {
     $options = array(
