@@ -23,20 +23,56 @@ foreach ($requiredPostDataList as $requiredPostDataItem) {
     }
 }
 
+// Send a GET request to fetch the UTXOs
+$address = $postData["senderAddress"];
+$utxosUrl = "http://0.0.0.0:12200/api/getutxos?address=$address";
+
+$ch = curl_init($utxosUrl);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$utxosResponse = curl_exec($ch);
+$http_response_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
+
+if ($http_response_code !== 200) {
+    http_response_code($http_response_code);
+    echo $utxosResponse;
+    exit;
+}
+
+$utxos = json_decode($utxosResponse, true);
+
+$requiredAmount = $postData["amount"];
+$remainingAmount = $requiredAmount;
+$selectedUtxos = array();
+
+// Calculate the change amount and add it as an output
+foreach ($utxos["data"] as $utxo) {
+    if ($remainingAmount <= 0) {
+        break; // Stop the loop if the required amount is met
+    }
+    
+    // Add the UTXO to the input
+    $selectedUtxos[] = $utxo;
+    
+    // Update the remaining amount
+    $remainingAmount -= $utxo["amount"];
+}
+
 // Create a transaction
 $transactionData = array(
     'senderAddress' => $postData["senderAddress"],
     "publicKey" => $postData["publicKey"],
-    "input" => [],
+    "input" => $selectedUtxos,
     "output" => [
         array(
             'recipientAddress' => $postData["recipientAddress"],
-            'amount' => $postData["amount"],
+            'amount' => $requiredAmount,
             'index' => 0
         ),
+        // Add an output for the sender to receive the change
         array(
             'recipientAddress' => $postData["senderAddress"],
-            'amount' => $postData["amount"],
+            'amount' => $remainingAmount,
             'index' => 1
         )
     ]
