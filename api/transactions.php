@@ -59,7 +59,7 @@ $txid = hash('sha256', json_encode($transactionData));
 $transactionData = ['txid' => $txid] + $transactionData;
 
 // Send the transaction data, public key, and signature to the Node.js server
-$nodeJsServerUrl = 'http://0.0.0.0:12200/api/sendtransactions';
+$nodeJsServerUrl = 'http://127.0.0.1:12200/api/sendtransactions';
 
 
 $ch = curl_init($nodeJsServerUrl);
