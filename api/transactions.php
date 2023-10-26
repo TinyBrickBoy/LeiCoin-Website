@@ -82,6 +82,7 @@ if ($http_response_code) {
 if ($response !== false) {
     echo $response;
 } else {
+    http_response_code(500);
     echo json_encode(array(
         "cb" => false,
         "status" => 500,

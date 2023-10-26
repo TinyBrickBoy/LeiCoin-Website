@@ -58,7 +58,7 @@
                     publicKey: publicKey,
                     privateKey: privateKey,
                     recipientAddress: recipientAddress,
-                    amount: amount
+                    amount: amount.toString(),
                 };
 
                 try {
@@ -70,11 +70,11 @@
                         body: JSON.stringify(data),
                     });
 
+                    const jsonData = await response.json();
                     if (response.status === 200) {
-                        const jsonData = await response.json();
                         Swal.fire('Success', jsonData.message, 'success');
                     } else {
-                        Swal.fire('Error', 'An error occurred', 'error');
+                        Swal.fire('Error', jsonData.message, 'error');
                     }
                 } catch (error) {
                     Swal.fire('Error', 'An error occurred: ' + error, 'error');
