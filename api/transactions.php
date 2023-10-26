@@ -78,10 +78,6 @@ $transactionData = array(
     ]
 );
 
-foreach ($transactionData["output"] as &$transaction) {
-    $transaction['hash'] = hash('sha256', json_encode($transaction));
-}
-
 $decoded_private_key = base64_decode($postData["privateKey"]);
 
 // Sign the transaction with the private key
