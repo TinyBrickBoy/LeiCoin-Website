@@ -62,45 +62,30 @@ $transactionData = ['txid' => $txid] + $transactionData;
 $nodeJsServerUrl = 'http://localhost:12200/api/sendtransactions';
 
 // Use output buffering to capture the response from the Node.js server
-ob_start();
-$response = http_post_data($nodeJsServerUrl, json_encode($transactionData));
-$bufferedResponse = ob_get_clean();
+$context = stream_context_create(array(
+    'http' => array(
+        'method' => 'POST',
+        'header' => 'Content-Type: application/json',
+        'content' => json_encode($transactionData),
+    ),
+));
 
-// Get the HTTP status code from the Node.js server response
-$http_response_code = (isset($http_response_header[0])) ? explode(' ', $http_response_header[0])[1] : 500;
-http_response_code($http_response_code); // Set the HTTP status code to the received status code
+$response = @file_get_contents($nodeJsServerUrl, false, $context);
+$http_response_code = $http_response_header[0];
 
-// Check if the response is JSON, and if so, merge it with the PHP response
-if (is_json($response)) {
-    $jsonResponse = json_decode($response, true);
-    if (isset($jsonResponse['message'])) {
-        $bufferedResponse = json_encode(array_merge($jsonResponse, ['php_message' => $bufferedResponse]));
-    }
+if ($http_response_code) {
+    list($protocol, $code, $text) = explode(' ', $http_response_code, 3);
+    http_response_code((int)$code);
 }
 
 // Echo the response message, even if the request fails
-echo $bufferedResponse;
-
-// Function to make a POST request
-function http_post_data($url, $transactionData) {
-    $options = array(
-        'http' => array(
-            'method' => 'POST',
-            'header' => 'Content-Type: application/json',
-            'content' => $transactionData,
-        ),
-    );
-
-    $context = stream_context_create($options);
-    $result = file_get_contents($url, false, $context);
-
-    return $result;
-}
-
-// Function to check if a string is JSON
-function is_json($string) {
-    json_decode($string);
-    return (json_last_error() == JSON_ERROR_NONE);
+if ($response) {
+    echo $response;
+} else {
+    echo json_encode(array(
+        "cb" => false,
+        "message" => "Request to Node.js server failed."
+    ));
 }
 
 ?>
