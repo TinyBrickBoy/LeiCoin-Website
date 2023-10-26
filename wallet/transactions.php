@@ -46,7 +46,7 @@
         document.addEventListener("DOMContentLoaded", function () {
             var submitBtn = document.getElementById("submitBtn");
 
-            submitBtn.addEventListener("click", function () {
+            submitBtn.addEventListener("click", async function () {
                 var senderAddress = document.getElementById("senderAddress").value;
                 var publicKey = document.getElementById("publicKey").value;
                 var privateKey = document.getElementById("privateKey").value;
@@ -61,20 +61,24 @@
                     amount: amount
                 };
 
-                fetch('/api/transactions.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    Swal.fire('Success', 'Transaction sent successfully. Response: ' + JSON.stringify(data), 'success');
-                })
-                .catch(error => {
+                try {
+                    const response = await fetch('/api/transactions.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data),
+                    });
+
+                    if (response.status === 200) {
+                        const jsonData = await response.json();
+                        Swal.fire('Success', jsonData.message, 'success');
+                    } else {
+                        Swal.fire('Error', 'An error occurred', 'error');
+                    }
+                } catch (error) {
                     Swal.fire('Error', 'An error occurred: ' + error, 'error');
-                });
+                }
             });
         });
     </script>
