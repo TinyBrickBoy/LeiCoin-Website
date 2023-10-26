@@ -84,8 +84,6 @@ if ($response !== false) {
 } else {
     http_response_code(500);
     echo json_encode(array(
-        "cb" => false,
-        "status" => 500,
         "message" => "Request to Node.js server failed."
     ));
 }
