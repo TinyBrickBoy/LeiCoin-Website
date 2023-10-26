@@ -61,31 +61,33 @@ $transactionData = ['txid' => $txid] + $transactionData;
 // Send the transaction data, public key, and signature to the Node.js server
 $nodeJsServerUrl = 'http://localhost:12200/api/sendtransactions';
 
-// Use output buffering to capture the response from the Node.js server
-$context = stream_context_create(array(
-    'http' => array(
-        'method' => 'POST',
-        'header' => 'Content-Type: application/json',
-        'content' => json_encode($transactionData),
-    ),
-));
 
-$response = @file_get_contents($nodeJsServerUrl, false, $context);
-$http_response_code = $http_response_header[0];
+$ch = curl_init($nodeJsServerUrl);
 
+// Set cURL options
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($transactionData));
+curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$response = curl_exec($ch);
+$http_response_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+// Set the HTTP response code to match the Node.js server's response code
 if ($http_response_code) {
-    list($protocol, $code, $text) = explode(' ', $http_response_code, 3);
-    http_response_code((int)$code);
+    http_response_code($http_response_code);
 }
 
-// Echo the response message, even if the request fails
-if ($response) {
+// Always display the response from the Node.js server
+if ($response !== false) {
     echo $response;
 } else {
     echo json_encode(array(
         "cb" => false,
+        "status" => 500,
         "message" => "Request to Node.js server failed."
     ));
 }
 
+curl_close($ch);
 ?>
