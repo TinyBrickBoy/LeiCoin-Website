@@ -25,7 +25,7 @@ foreach ($requiredPostDataList as $requiredPostDataItem) {
 
 // Send a GET request to fetch the UTXOs
 $address = $postData["senderAddress"];
-$utxosUrl = "http://0.0.0.0:12200/api/getutxos?address=$address";
+$utxosUrl = "http://127.0.0.1:12200/api/getutxos?address=$address";
 
 $ch = curl_init($utxosUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
