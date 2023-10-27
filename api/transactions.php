@@ -86,8 +86,10 @@ openssl_sign(json_encode($transactionData), $signature, $decoded_private_key, OP
 // Convert the signature to a base64-encoded string and add it to the transaction data
 $transactionData['signature'] = base64_encode($signature);
 
+$transactionDataForHash = $transactionData['senderAddress'] . $transactionData["publicKey"] . json_encode($transactionData["input"]) . json_encode($transactionData["output"]) . $transactionData["signature"];
+
 // generate the txid and add it to the transaction data
-$txid = hash('sha256', json_encode($transactionData));
+$txid = hash('sha256', $transactionDataForHash);
 $transactionData = ['txid' => $txid] + $transactionData;
 
 // Send the transaction data, public key, and signature to the Node.js server
