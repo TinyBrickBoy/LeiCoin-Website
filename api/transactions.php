@@ -46,7 +46,7 @@ $remainingAmount = $requiredAmount;
 $selectedUtxos = array();
 
 // Calculate the change amount and add it as an output
-foreach ($utxos["data"] as $utxo) {
+foreach ($utxos["data"] as $utxo_id) {
     if ($remainingAmount <= 0) {
         break; // Stop the loop if the required amount is met
     }
