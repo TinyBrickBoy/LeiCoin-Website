@@ -46,16 +46,23 @@ $remainingAmount = $requiredAmount;
 $selectedUtxos = array();
 
 // Calculate the change amount and add it as an output
-foreach ($utxos["data"] as $utxo) {
+foreach ($utxos["data"] as $utxoID => $utxoData) {
     if ($remainingAmount <= 0) {
         break; // Stop the loop if the required amount is met
     }
     
+    $selectedUtxoArray = explode("_", $utxoID);
+
+    $selectedUtxo = array(
+        "txid" => $selectedUtxoArray[0],
+        "index" => $selectedUtxoArray[1]
+    );
+
     // Add the UTXO to the input
-    $selectedUtxos[] = $utxo;
+    $selectedUtxos[] = $selectedUtxo;
     
     // Update the remaining amount
-    $remainingAmount -= $utxo["amount"];
+    $remainingAmount -= $utxoData["amount"];
 }
 
 // Create a transaction
