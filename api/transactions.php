@@ -73,30 +73,54 @@ $transactionData = array(
     "output" => [
         array(
             'recipientAddress' => $postData["recipientAddress"],
-            'amount' => $requiredAmount * 1,
-            'index' => 0
+            'amount' => $requiredAmount * 1
         ),
         // Add an output for the sender to receive the change
         array(
             'recipientAddress' => $postData["senderAddress"],
-            'amount' => $remainingAmount * -1,
-            'index' => 1
+            'amount' => $remainingAmount * -1
         )
     ]
 );
 
+function getPreparedObjectForHashing($obj, $excludedKeys = []) {
+    $deepSort = function ($input) use (&$deepSort, $excludedKeys) {
+        if (!is_array($input) && !is_object($input)) {
+            return $input;
+        }
+
+        if (is_array($input)) {
+            return array_map($deepSort, $input);
+        }
+
+        $sortedObj = [];
+        $inputArray = (array) $input;
+        $keys = array_keys($inputArray);
+        sort($keys);
+
+        foreach ($keys as $key) {
+            if (!in_array($key, $excludedKeys)) {
+                $sortedObj[$key] = $deepSort($inputArray[$key]);
+            }
+        }
+
+        return (object) $sortedObj;
+    };
+
+    return $deepSort($obj);
+}
+
+
 $decoded_private_key = base64_decode($postData["privateKey"]);
 
 // Sign the transaction with the private key
-openssl_sign(json_encode($transactionData), $signature, $decoded_private_key, OPENSSL_ALGO_SHA256);
+openssl_sign(getPreparedObjectForHashing($transactionData) , $signature, $decoded_private_key, OPENSSL_ALGO_SHA256);
 
 // Convert the signature to a base64-encoded string and add it to the transaction data
 $transactionData['signature'] = base64_encode($signature);
 
-$transactionDataForHash = $transactionData['senderAddress'] . $transactionData["publicKey"] . json_encode($transactionData["input"]) . json_encode($transactionData["output"]) . $transactionData["signature"];
-
 // generate the txid and add it to the transaction data
-$txid = hash('sha256', $transactionDataForHash);
+$txid = hash('sha256', getPreparedObjectForHashing($transactionData));
 $transactionData = ['txid' => $txid] + $transactionData;
 
 // Send the transaction data, public key, and signature to the Node.js server
