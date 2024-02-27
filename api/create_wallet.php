@@ -21,7 +21,7 @@ $senderAddress = $publicKeyPEM;
 //$encoded_private_key = str_replace("\n-----END PRIVATE KEY-----\n", '', $encoded_private_key);
 
 $encoded_public_key = base64_encode($publicKeyPEM);
-$encoded_senderAddress = hash("sha256", $publicKeyPEM);
+$encoded_senderAddress = "lc1-" . hash("sha256", $publicKeyPEM);
 
 $encoded_private_key = base64_encode($privateKeyPEM);
 
