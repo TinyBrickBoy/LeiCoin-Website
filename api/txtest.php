@@ -16,7 +16,7 @@ openssl_sign("abc" , $signature, $decoded_private_key, OPENSSL_ALGO_SHA256);
 
 http_response_code(200);
 echo json_encode(array(
-    "message" => $signature;
+    "message" => $signature
 ));
 
 ?>
