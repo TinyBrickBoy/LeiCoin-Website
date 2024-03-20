@@ -71,35 +71,11 @@ $transactionData['signature'] = base64_encode($signature);
 $txid = hash('sha256', getPreparedObjectForHashing($transactionData));
 $transactionData = ['txid' => $txid] + $transactionData;
 
-// Send the transaction data, public key, and signature to the Node.js server
-$nodeJsServerUrl = 'http://127.0.0.1:12200/api/sendtransactions';
 
 
-$ch = curl_init($nodeJsServerUrl);
+http_response_code(500);
+echo json_encode(array(
+    "message" => $signature
+));
 
-// Set cURL options
-curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($transactionData));
-curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-$response = curl_exec($ch);
-$http_response_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-// Set the HTTP response code to match the Node.js server's response code
-if ($http_response_code) {
-    http_response_code($http_response_code);
-}
-
-// Always display the response from the Node.js server
-if ($response !== false) {
-    echo $response;
-} else {
-    http_response_code(500);
-    echo json_encode(array(
-        "message" => "Request to Node.js server failed."
-    ));
-}
-
-curl_close($ch);
 ?>
