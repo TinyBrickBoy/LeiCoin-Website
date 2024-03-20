@@ -14,14 +14,14 @@ function generateEd25519KeyPair() {
 
     return array(
         'publicKey' => $publicKey,
-        'secretKey' => substr($secretKey, 0, 64)
+        'secretKey' => $secretKey,
     );
 }
 
 try {
     $keyPair = generateEd25519KeyPair();
     $publicKeyHex = bin2hex($keyPair['publicKey']);
-    $secretKeyHex = bin2hex($keyPair['secretKey']);
+    $secretKeyHex = substr(bin2hex($keyPair['secretKey'] 0, 64));
 
     // Generate address from the public key
     $address = "lc0x" . substr(hash("sha256", $publicKeyHex), 0, 38);
