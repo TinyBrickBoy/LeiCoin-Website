@@ -2,33 +2,39 @@
 
 header('Content-Type: application/json; charset=utf-8');
 
-// Generate a public-private key pair
-$privateKey = openssl_pkey_new(array(
-    'private_key_bits' => 2048,
-    'private_key_type' => OPENSSL_KEYTYPE_RSA,
-));
+// Generate a new Ed25519 key pair
+function generateEd25519KeyPair() {
+    if (!function_exists('sodium_crypto_sign_keypair')) {
+        throw new Exception('Sodium extension not available.');
+    }
 
-openssl_pkey_export($privateKey, $privateKeyPEM);
-$details = openssl_pkey_get_details($privateKey);
-$publicKeyPEM = $details['key'];
+    $keyPair = sodium_crypto_sign_keypair();
+    $publicKey = sodium_crypto_sign_publickey($keyPair);
+    $secretKey = sodium_crypto_sign_secretkey($keyPair);
 
-$senderAddress = $publicKeyPEM;
+    return array(
+        'publicKey' => $publicKey,
+        'secretKey' => $secretKey
+    );
+}
 
-//$encoded_senderAddress = str_replace("-----BEGIN PUBLIC KEY-----\n", '', $senderAddress);
-//$encoded_senderAddress = str_replace("\n-----END PUBLIC KEY-----\n", '', $encoded_senderAddress);
+try {
+    $keyPair = generateEd25519KeyPair();
+    $publicKeyHex = bin2hex($keyPair['publicKey']);
+    $secretKeyHex = bin2hex($keyPair['secretKey']);
 
-//$encoded_private_key = str_replace("-----BEGIN PRIVATE KEY-----\n", '', $privateKeyPEM);
-//$encoded_private_key = str_replace("\n-----END PRIVATE KEY-----\n", '', $encoded_private_key);
+    // Generate address from the public key
+    $address = "lc0x" . substr(hash("sha256", $publicKeyHex), 0, 38);
 
-$encoded_public_key = base64_encode($publicKeyPEM);
-$encoded_senderAddress = "lc0x" . substr(hash("sha256", $encoded_public_key), 0, 38);
-
-$encoded_private_key = base64_encode($privateKeyPEM);
-
-echo json_encode(array(
-    "address" => $encoded_senderAddress,
-    "public_key" => $encoded_public_key,
-    "private_key" => $encoded_private_key,
-));
+    echo json_encode(array(
+        "address" => $address,
+        "public_key" => $publicKeyHex,
+        "private_key" => $secretKeyHex,
+    ));
+} catch (Exception $e) {
+    echo json_encode(array(
+        "error" => $e->getMessage()
+    ));
+}
 
 ?>
