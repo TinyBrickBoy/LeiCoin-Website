@@ -14,7 +14,7 @@ function generateEd25519KeyPair() {
 
     return array(
         'publicKey' => $publicKey,
-        'secretKey' => $secretKey
+        'secretKey' => substr($secretKey, 0, 64)
     );
 }
 
