@@ -16,17 +16,6 @@ $requiredPostDataList = array(
     "amount"
 );
 
-foreach ($requiredPostDataList as $requiredPostDataItem) {
-    if (!isset($postData[$requiredPostDataItem]) || empty($postData[$requiredPostDataItem])) {
-        echo json_encode(array(
-            "cb" => "error",
-            "message" => "400 Bad Request. Missing Data."
-        ));
-        http_response_code(400);
-        exit;
-    }
-}
-
 
 $decoded_private_key = base64_decode($postData["privateKey"]);
 
