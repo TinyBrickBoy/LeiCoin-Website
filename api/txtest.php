@@ -28,45 +28,10 @@ foreach ($requiredPostDataList as $requiredPostDataItem) {
 }
 
 
-
-// Create a transaction
-$transactionData = array(
-    'senderAddress' => $postData["senderAddress"],
-    "publicKey" => $postData["publicKey"],
-);
-
-function getPreparedObjectForHashing($obj, $excludedKeys = []) {
-    $deepSort = function ($input) use (&$deepSort, $excludedKeys) {
-        if (!is_array($input) && !is_object($input)) {
-            return $input;
-        }
-
-        if (is_array($input)) {
-            return array_map($deepSort, $input);
-        }
-
-        $sortedObj = [];
-        $inputArray = (array) $input;
-        $keys = array_keys($inputArray);
-        sort($keys);
-
-        foreach ($keys as $key) {
-            if (!in_array($key, $excludedKeys)) {
-                $sortedObj[$key] = $deepSort($inputArray[$key]);
-            }
-        }
-
-        return (object) $sortedObj;
-    };
-
-    return $deepSort($obj);
-}
-
-
 $decoded_private_key = base64_decode($postData["privateKey"]);
 
 // Sign the transaction with the private key
-openssl_sign(getPreparedObjectForHashing($transactionData) , $signature, $decoded_private_key, OPENSSL_ALGO_SHA256);
+openssl_sign("abc" , $signature, $decoded_private_key, OPENSSL_ALGO_SHA256);
 
 // Convert the signature to a base64-encoded string and add it to the transaction data
 $transactionData['signature'] = base64_encode($signature);
