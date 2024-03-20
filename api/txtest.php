@@ -73,9 +73,9 @@ $transactionData = ['txid' => $txid] + $transactionData;
 
 
 
-http_response_code(500);
+http_response_code(200);
 echo json_encode(array(
-    "message" => $signature
+    "message" => $signature;
 ));
 
 ?>
