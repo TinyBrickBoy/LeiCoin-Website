@@ -24,7 +24,7 @@ try {
     $secretKeyHex = substr(bin2hex($keyPair['secretKey']), 0, 64);
 
     // Generate address from the public key
-    $address = "lc0x" . substr(hash("sha256", $publicKeyHex), 0, 38);
+    $address = "lc0x" . substr(hash("sha256", $publicKeyHex), 0, 40);
 
     echo json_encode(array(
         "address" => $address,
