@@ -19,7 +19,7 @@ export default defineNuxtConfig({		compatibilityDate: '2024-11-01',
 				{ rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" },
 				{ rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&display=swap" },
 
-				{ rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css' }
+				{ rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css' },
 
 				{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
 			],
