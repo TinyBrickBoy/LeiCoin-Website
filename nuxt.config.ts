@@ -12,5 +12,15 @@ export default defineNuxtConfig({
     }
   },
 
+  vite: {
+    server: {
+      allowedHosts: [
+        "leicoin.leicraftmc.de",
+        "localhost",
+        "*.coder.leicraftmc.de"
+      ]
+    }
+  },
+
   modules: ["nitro-cloudflare-dev"]
 })
