@@ -1,35 +1,57 @@
 <template>
-    <div class="bg-dark text-light min-vh-100">
+    <div>
         <!-- Hero Section -->
-        <section class="py-5 py-md-7 bg-gradient">
+        <section class="hero-section">
+            <div class="hero-bg-gradient"></div>
             <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-md-6 mb-4 mb-md-0">
-                        <h1 class="display-4 fw-bold mb-4">
-                            The Future of <span class="text-success">Blockchain</span> Technology
+                <div class="row align-items-center min-vh-100 py-5">
+                    <div class="col-lg-6 mb-5 mb-lg-0">
+                        <h1 class="display-3 fw-bold mb-4 animate-slide-in">
+                            The Future of <br>
+                            <span class="gradient-text glow-text">Blockchain</span> Technology
                         </h1>
-                        <p class="lead mb-3 text-light-emphasis">
+                        <p class="lead mb-4 text-secondary animate-slide-in" style="animation-delay: 0.2s;">
                             LeiCoin is a modern, open source blockchain project that delivers energy-efficient
                             Proof-of-Stake technology, optimized data compression, and a scalable architecture.
                         </p>
-                        <p class="lead mb-4 text-light-emphasis">
-                            Join our community of developers and contributors to build the next generation of
-                            decentralized applications.
-                        </p>
-                        <div class="d-flex flex-column flex-sm-row gap-3">
-                            <button class="btn btn-success btn-lg">
-                                Get Started
+                        <div class="d-flex flex-column flex-sm-row gap-3 animate-slide-in" style="animation-delay: 0.4s;">
+                            <button class="btn btn-gradient btn-lg btn-glow">
+                                <span class="me-2">Get Started</span>
+                                <ChevronRight :size="20" />
                             </button>
-                            <button class="btn btn-outline-success btn-lg">
+                            <a href="https://github.com/LeiCoin-project/" target="_blank" 
+                               class="btn btn-outline-gradient btn-lg">
+                                <Github :size="20" class="me-2" />
                                 GitHub Repository
-                            </button>
+                            </a>
+                        </div>
+                        
+                        <!-- Stats Mini -->
+                        <div class="row mt-5 g-4 animate-slide-in" style="animation-delay: 0.6s;">
+                            <div class="col-4">
+                                <div class="text-center text-sm-start">
+                                    <h3 class="fw-bold gradient-text mb-0">99%</h3>
+                                    <p class="small text-secondary mb-0">Energy Saved</p>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="text-center text-sm-start">
+                                    <h3 class="fw-bold gradient-text mb-0">10k+</h3>
+                                    <p class="small text-secondary mb-0">TPS</p>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="text-center text-sm-start">
+                                    <h3 class="fw-bold gradient-text mb-0">5M+</h3>
+                                    <p class="small text-secondary mb-0">Users</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6 d-flex justify-content-center">
-                        <div class="position-relative w-100" style="max-width: 400px;">
-                            <div class="position-absolute top-0 start-0 end-0 bottom-0 bg-success opacity-25 rounded-circle"
-                                style="filter: blur(70px);"></div>
-                            <!-- Placeholder for image -->
+                    
+                    <div class="col-lg-6 d-flex justify-content-center">
+                        <div class="position-relative animate-float">
+                            <LeicoinLogo class="w-100" style="max-width: 450px; filter: drop-shadow(0 0 50px rgba(0, 255, 136, 0.3));" />
                         </div>
                     </div>
                 </div>
@@ -37,113 +59,25 @@
         </section>
 
         <!-- Features Section -->
-        <section id="features" class="py-5 py-md-6 bg-dark">
-            <div class="container">
+        <section id="features" class="py-5 section-dark section-pattern">
+            <div class="container py-5">
                 <div class="text-center mb-5">
                     <h2 class="display-5 fw-bold mb-3">Key Features</h2>
-                    <p class="lead text-light-emphasis mx-auto" style="max-width: 700px;">
+                    <p class="lead text-secondary mx-auto" style="max-width: 700px;">
                         LeiCoin combines cutting-edge technology with practical solutions to create an open source
                         blockchain platform that's built for the future.
                     </p>
                 </div>
 
                 <div class="row g-4">
-                    <!-- Feature 1 -->
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card h-100 bg-dark-subtle border-secondary">
-                            <div class="card-body">
-                                <div class="bg-success bg-opacity-25 p-3 rounded d-inline-block mb-3">
-                                    <Zap class="text-success" width="24" height="24" />
+                    <div class="col-md-6 col-lg-4" v-for="(feature, index) in features" :key="index">
+                        <div class="card h-100 card-dark feature-card">
+                            <div class="card-body p-4">
+                                <div class="feature-icon">
+                                    <component :is="feature.icon" :size="28" color="#000" />
                                 </div>
-                                <h3 class="card-title h5 fw-semibold">Energy-Efficient PoS</h3>
-                                <p class="card-text text-light-emphasis">
-                                    Our Proof-of-Stake consensus mechanism drastically reduces energy consumption
-                                    compared to
-                                    traditional Proof-of-Work systems.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Feature 2 -->
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card h-100 bg-dark-subtle border-secondary">
-                            <div class="card-body">
-                                <div class="bg-success bg-opacity-25 p-3 rounded d-inline-block mb-3">
-                                    <Database class="text-success" width="24" height="24" />
-                                </div>
-                                <h3 class="card-title h5 fw-semibold">Optimized Data Compression</h3>
-                                <p class="card-text text-light-emphasis">
-                                    Advanced data compression techniques allow for efficient block storage and faster
-                                    transaction processing.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Feature 3 -->
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card h-100 bg-dark-subtle border-secondary">
-                            <div class="card-body">
-                                <div class="bg-success bg-opacity-25 p-3 rounded d-inline-block mb-3">
-                                    <BarChart class="text-success" width="24" height="24" />
-                                </div>
-                                <h3 class="card-title h5 fw-semibold">Scalable Architecture</h3>
-                                <p class="card-text text-light-emphasis">
-                                    Built from the ground up for scalability, LeiCoin can handle increasing transaction
-                                    volumes
-                                    without compromising performance.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Feature 4 -->
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card h-100 bg-dark-subtle border-secondary">
-                            <div class="card-body">
-                                <div class="bg-success bg-opacity-25 p-3 rounded d-inline-block mb-3">
-                                    <Shield class="text-success" width="24" height="24" />
-                                </div>
-                                <h3 class="card-title h5 fw-semibold">Enhanced Security</h3>
-                                <p class="card-text text-light-emphasis">
-                                    State-of-the-art cryptographic techniques ensure your transactions and data remain
-                                    secure
-                                    and tamper-proof.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Feature 5 -->
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card h-100 bg-dark-subtle border-secondary">
-                            <div class="card-body">
-                                <div class="bg-success bg-opacity-25 p-3 rounded d-inline-block mb-3">
-                                    <Globe class="text-success" width="24" height="24" />
-                                </div>
-                                <h3 class="card-title h5 fw-semibold">Global Accessibility</h3>
-                                <p class="card-text text-light-emphasis">
-                                    Designed for worldwide adoption with low latency and high throughput regardless of
-                                    geographic location.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Feature 6 -->
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card h-100 bg-dark-subtle border-secondary">
-                            <div class="card-body">
-                                <div class="bg-success bg-opacity-25 p-3 rounded d-inline-block mb-3">
-                                    <Code class="text-success" width="24" height="24" />
-                                </div>
-                                <h3 class="card-title h5 fw-semibold">Developer-Friendly</h3>
-                                <p class="card-text text-light-emphasis">
-                                    Comprehensive APIs and development tools make it easy to build decentralized
-                                    applications on
-                                    the LeiCoin platform.
-                                </p>
+                                <h3 class="h5 fw-semibold mb-3">{{ feature.title }}</h3>
+                                <p class="text-secondary mb-0">{{ feature.description }}</p>
                             </div>
                         </div>
                     </div>
@@ -152,53 +86,42 @@
         </section>
 
         <!-- Technology Section -->
-        <section id="technology" class="py-5 py-md-6 bg-dark-subtle">
-            <div class="container">
+        <section id="technology" class="py-5">
+            <div class="container py-5">
                 <div class="row align-items-center">
-                    <div class="col-md-6 mb-4 mb-md-0">
+                    <div class="col-lg-6 mb-5 mb-lg-0">
                         <h2 class="display-5 fw-bold mb-4">Advanced Blockchain Technology</h2>
-                        <p class="lead mb-4 text-light-emphasis">
+                        <p class="lead mb-4 text-secondary">
                             LeiCoin leverages cutting-edge technology to create a high-performance, decentralized
                             platform that's built for the future.
                         </p>
 
-                        <div class="d-flex mb-3">
-                            <div class="bg-success bg-opacity-25 p-2 rounded me-3 mt-1">
-                                <Check class="text-success" width="20" height="20" />
-                            </div>
-                            <div>
-                                <h3 class="fw-semibold h5">Proof-of-Stake Consensus</h3>
-                                <p class="text-light-emphasis">Energy-efficient validation that reduces carbon footprint
-                                    while maintaining security.</p>
-                            </div>
-                        </div>
-
-                        <div class="d-flex mb-3">
-                            <div class="bg-success bg-opacity-25 p-2 rounded me-3 mt-1">
-                                <Check class="text-success" width="20" height="20" />
-                            </div>
-                            <div>
-                                <h3 class="fw-semibold h5">Efficient Block Storage</h3>
-                                <p class="text-light-emphasis">Optimized data structures that minimize storage
-                                    requirements while maximizing throughput.</p>
-                            </div>
-                        </div>
-
-                        <div class="d-flex mb-3">
-                            <div class="bg-success bg-opacity-25 p-2 rounded me-3 mt-1">
-                                <Check class="text-success" width="20" height="20" />
-                            </div>
-                            <div>
-                                <h3 class="fw-semibold h5">Scalable Architecture</h3>
-                                <p class="text-light-emphasis">Designed to handle increasing transaction volumes without
-                                    compromising performance.</p>
+                        <div class="tech-features">
+                            <div class="d-flex mb-4" v-for="(tech, index) in technologies" :key="index">
+                                <div class="flex-shrink-0">
+                                    <div class="icon-circle">
+                                        <Check :size="20" />
+                                    </div>
+                                </div>
+                                <div class="ms-3">
+                                    <h4 class="h5 fw-semibold mb-2">{{ tech.title }}</h4>
+                                    <p class="text-secondary mb-0">{{ tech.description }}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
-                        <div class="bg-dark p-3 rounded border border-secondary">
-                            <!-- Placeholder for diagram -->
+                    <div class="col-lg-6">
+                        <div class="code-preview">
+                            <div class="code-header">
+                                <div class="code-dots">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                                <span class="code-title">leicoin.js</span>
+                            </div>
+                            <pre class="code-content"><code>{{ codeExample }}</code></pre>
                         </div>
                     </div>
                 </div>
@@ -206,67 +129,14 @@
         </section>
 
         <!-- Stats Section -->
-        <section class="py-5 bg-success text-white">
-            <div class="container">
-                <div class="row text-center g-4">
-                    <div class="col-md-6 col-lg-3">
-                        <div class="display-5 fw-bold mb-2">99%</ </div>
-                            <div class="text-white-50">Energy Reduction</div>
-                        </div>
-                        <div class="col-md-6 col-lg-3">
-                            <div class="display-5 fw-bold mb-2">10,000+</div>
-                            <div class="text-white-50">Transactions Per Second</div>
-                        </div>
-                        <div class="col-md-6 col-lg-3">
-                            <div class="display-5 fw-bold mb-2">5M+</div>
-                            <div class="text-white-50">Users Worldwide</div>
-                        </div>
-                        <div class="col-md-6 col-lg-3">
-                            <div class="display-5 fw-bold mb-2">24/7</div>
-                            <div class="text-white-50">Network Uptime</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Open Source Section -->
-        <section id="about" class="py-5 py-md-6 bg-dark">
-            <div class="container">
-                <div class="text-center mb-5">
-                    <h2 class="display-5 fw-bold mb-3">Open Source Project</h2>
-                    <p class="lead text-light-emphasis mx-auto" style="max-width: 700px;">
-                        LeiCoin is a community-driven, open source blockchain project focused on creating a secure,
-                        efficient, and future-proof solution.
-                    </p>
-                </div>
-
-                <div class="row align-items-center">
-                    <div class="col-md-6 mb-4 mb-md-0">
-                        <!-- Placeholder for community image -->
-                        <div class="bg-dark-subtle rounded border border-secondary" style="height: 300px;"></div>
-                    </div>
-                    <div class="col-md-6">
-                        <h3 class="h3 fw-bold mb-3">Community-Driven Development</h3>
-                        <p class="text-light-emphasis mb-3">
-                            LeiCoin was founded with a clear vision: to create a blockchain platform that combines high
-                            performance with sustainability. Our open source approach ensures transparency, security,
-                            and
-                            collaborative innovation.
-                        </p>
-                        <p class="text-light-emphasis mb-4">
-                            We welcome contributions from developers, researchers, and blockchain enthusiasts who share
-                            our vision of making blockchain technology accessible to everyone, without compromising our
-                            planet's
-                            future.
-                        </p>
-                        <div class="d-flex flex-column flex-sm-row gap-3">
-                            <button class="btn btn-success">
-                                Contribute on GitHub
-                            </button>
-                            <button class="btn btn-outline-success">
-                                Join Discord Community
-                            </button>
+        <section class="py-5 stats-section">
+            <div class="container py-5">
+                <div class="row g-4">
+                    <div class="col-md-6 col-lg-3" v-for="(stat, index) in stats" :key="index">
+                        <div class="stat-item text-center">
+                            <component :is="stat.icon" :size="40" class="mb-3 text-secondary" />
+                            <div class="stat-number">{{ stat.value }}</div>
+                            <div class="text-secondary">{{ stat.label }}</div>
                         </div>
                     </div>
                 </div>
@@ -274,19 +144,26 @@
         </section>
 
         <!-- CTA Section -->
-        <section class="py-5 py-md-6 bg-success bg-gradient text-white">
-            <div class="container text-center">
+        <section class="py-5 cta-section">
+            <div class="container py-5 text-center">
                 <h2 class="display-5 fw-bold mb-4">Ready to Get Started?</h2>
-                <p class="lead mb-4 mx-auto" style="max-width: 700px;">
+                <p class="lead mb-5 text-secondary mx-auto" style="max-width: 700px;">
                     Join the LeiCoin ecosystem today and be part of the future of blockchain technology.
                 </p>
                 <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
-                    <button class="btn btn-light btn-lg text-success">
+                    <button class="btn btn-gradient btn-lg btn-glow">
+                        <Wallet :size="20" class="me-2" />
                         Download Wallet
                     </button>
-                    <button class="btn btn-outline-light btn-lg">
+                    <button class="btn btn-outline-gradient btn-lg">
+                        <BookOpen :size="20" class="me-2" />
                         Read Documentation
                     </button>
+                </div>
+                
+                <!-- Decorative element -->
+                <div class="mt-5 pt-5">
+                    <div class="glow mx-auto" style="width: 200px; height: 2px; background: var(--gradient-primary);"></div>
                 </div>
             </div>
         </section>
@@ -294,15 +171,211 @@
 </template>
 
 <script setup>
-import { Zap, Database, BarChart, Shield, Globe, Code, Check } from 'lucide-vue-next';
+import { 
+    Zap, Database, BarChart, Shield, Globe, Code, 
+    Check, ChevronRight, Github, Activity, Users, 
+    Server, Cpu, Wallet, BookOpen 
+} from 'lucide-vue-next';
+import LeicoinLogo from '~/components/images/leicoin-logo.vue';
+
+const features = [
+    {
+        icon: Zap,
+        title: 'Energy-Efficient PoS',
+        description: 'Our Proof-of-Stake consensus mechanism drastically reduces energy consumption compared to traditional Proof-of-Work systems.'
+    },
+    {
+        icon: Database,
+        title: 'Optimized Data Compression',
+        description: 'Advanced data compression techniques allow for efficient block storage and faster transaction processing.'
+    },
+    {
+        icon: BarChart,
+        title: 'Scalable Architecture',
+        description: 'Built from the ground up for scalability, LeiCoin can handle increasing transaction volumes without compromising performance.'
+    },
+    {
+        icon: Shield,
+        title: 'Enhanced Security',
+        description: 'State-of-the-art cryptographic techniques ensure your transactions and data remain secure and tamper-proof.'
+    },
+    {
+        icon: Globe,
+        title: 'Global Accessibility',
+        description: 'Designed for worldwide adoption with low latency and high throughput regardless of geographic location.'
+    },
+    {
+        icon: Code,
+        title: 'Developer-Friendly',
+        description: 'Comprehensive APIs and development tools make it easy to build decentralized applications on the LeiCoin platform.'
+    }
+];
+
+const technologies = [
+    {
+        title: 'Proof-of-Stake Consensus',
+        description: 'Energy-efficient validation that reduces carbon footprint while maintaining security.'
+    },
+    {
+        title: 'Efficient Block Storage',
+        description: 'Optimized data structures that minimize storage requirements while maximizing throughput.'
+    },
+    {
+        title: 'Scalable Architecture',
+        description: 'Designed to handle increasing transaction volumes without compromising performance.'
+    }
+];
+
+const stats = [
+    { icon: Activity, value: '99%', label: 'Energy Reduction' },
+    { icon: Server, value: '10,000+', label: 'Transactions Per Second' },
+    { icon: Users, value: '5M+', label: 'Users Worldwide' },
+    { icon: Cpu, value: '24/7', label: 'Network Uptime' }
+];
+
+const codeExample = `import { LeiCoin } from 'leicoin-sdk';
+
+// Initialize LeiCoin client
+const client = new LeiCoin({
+  network: 'mainnet',
+  nodeUrl: 'https://node.leicoin.io'
+});
+
+// Create transaction
+const tx = await client.createTransaction({
+  to: '0x742d35Cc6634C0532925a3b844Bc9e7595f6302',
+  amount: 100,
+  currency: 'LEI'
+});
+
+// Sign and broadcast
+const result = await client.signAndBroadcast(tx);
+console.log('Transaction hash:', result.hash);`;
 </script>
 
-<style>
-html {
-    scroll-behavior: smooth;
+<style scoped>
+/* Hero background animation */
+@keyframes gradient-shift {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(30px, -30px) rotate(120deg); }
+    66% { transform: translate(-20px, 20px) rotate(240deg); }
 }
 
-.bg-gradient {
-    background: linear-gradient(135deg, #212529 0%, #343a40 100%);
+.hero-bg-gradient {
+    animation: gradient-shift 20s ease infinite;
+}
+
+/* Icon circle */
+.icon-circle {
+    width: 40px;
+    height: 40px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bg-primary);
+}
+
+/* Code preview */
+.code-preview {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.code-header {
+    background: var(--bg-hover);
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border-primary);
+}
+
+.code-dots {
+    display: flex;
+    gap: 8px;
+}
+
+.code-dots span {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--border-secondary);
+}
+
+.code-dots span:first-child {
+    background: #ff5f56;
+}
+
+.code-dots span:nth-child(2) {
+    background: #ffbd2e;
+}
+
+.code-dots span:last-child {
+    background: #27c93f;
+}
+
+.code-title {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.code-content {
+    margin: 0;
+    padding: 1.5rem;
+    background: transparent;
+    color: var(--accent-primary);
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    overflow-x: auto;
+}
+
+/* Stats section */
+.stats-section {
+    background: var(--bg-secondary);
+    position: relative;
+    overflow: hidden;
+}
+
+.stats-section::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    opacity: 0.1;
+}
+
+/* CTA section */
+.cta-section {
+    background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: auto;
+        padding: 2rem 0;
+    }
+    
+    .display-3 {
+        font-size: 2.5rem;
+    }
+    
+    .display-5 {
+        font-size: 2rem;
+    }
+    
+    .code-preview {
+        margin-top: 2rem;
+    }
 }
 </style>
